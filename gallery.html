@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery – Happy Moments | Angel Dale Pre-Primary School</title>
+  <meta name="description" content="Browse our gallery of cherished school moments — children learning, playing, creating, and growing at Angel Dale Pre-Primary School." />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
+  <style>
+    /* Gallery filter buttons */
+    .gallery-filter {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--primary-light);
+      background: var(--white);
+      color: var(--text);
+      font-family: 'Baloo 2', cursive;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      border-color: var(--primary);
+      box-shadow: 0 4px 15px rgba(244, 143, 177, 0.35);
+    }
+
+    /* Masonry-like gallery */
+    .gallery-masonry {
+      columns: 3;
+      column-gap: 18px;
+    }
+
+    .gallery-masonry-item {
+      break-inside: avoid;
+      margin-bottom: 18px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      display: block;
+    }
+
+    .gallery-masonry-item img {
+      width: 100%;
+      display: block;
+      transition: var(--transition-slow);
+    }
+
+    .gallery-masonry-item:hover img {
+      transform: scale(1.06);
+    }
+
+    .gallery-masonry-item .gallery-overlay {
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .gallery-masonry-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 16px 14px;
+      background: linear-gradient(to top, rgba(244, 143, 177, 0.9), transparent);
+      color: var(--white);
+      font-family: 'Baloo 2', cursive;
+      font-size: 0.88rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .gallery-masonry-item:hover .gallery-caption {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-masonry { columns: 2; }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-masonry { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo" aria-label="Angel Dale Home">
+          <div class="nav-logo-icon">🌸</div>
+          <div class="nav-logo-text">
+            <span class="nav-logo-name">Angel Dale</span>
+            <span class="nav-logo-tagline">Pre-Primary School</span>
+          </div>
+        </a>
+        <ul class="nav-menu" id="nav-menu" role="menubar">
+          <li role="none"><a href="index.html" class="nav-link" role="menuitem">Home</a></li>
+          <li role="none"><a href="insights.html" class="nav-link" role="menuitem">Insights</a></li>
+          <li role="none"><a href="activities.html" class="nav-link" role="menuitem">Activities</a></li>
+          <li role="none"><a href="gallery.html" class="nav-link active" role="menuitem">Gallery</a></li>
+          <li role="none"><a href="training.html" class="nav-link" role="menuitem">Training</a></li>
+          <li role="none"><a href="contact.html" class="nav-link nav-cta" role="menuitem">Contact Us</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ PAGE HERO ============ -->
+  <section class="page-hero" aria-label="Gallery page header">
+    <div class="container">
+      <div class="page-hero-breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Gallery</span>
+      </div>
+      <span class="section-badge">Our Memories</span>
+      <h1>A Window Into Our <span style="color:var(--primary-dark)">World of Wonder</span></h1>
+      <p>Every photo tells a story of a child discovering, creating, and growing. Welcome to our gallery of cherished moments.</p>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY SECTION ============ -->
+  <section class="section bg-white" aria-label="Photo gallery">
+    <div class="container">
+      <!-- Filter Buttons -->
+      <div class="gallery-filter reveal" role="group" aria-label="Gallery filter">
+        <button class="filter-btn active" data-filter="all" id="filter-all">🌸 All</button>
+        <button class="filter-btn" data-filter="classroom" id="filter-classroom">🏫 Classroom</button>
+        <button class="filter-btn" data-filter="activities" id="filter-activities">🎨 Activities</button>
+        <button class="filter-btn" data-filter="outdoor" id="filter-outdoor">🌳 Outdoor</button>
+        <button class="filter-btn" data-filter="events" id="filter-events">🎉 Events</button>
+      </div>
+
+      <!-- Gallery Masonry Grid -->
+      <div class="gallery-masonry reveal">
+        <!-- Row 1 -->
+        <div class="gallery-masonry-item" data-lightbox data-category="classroom">
+          <img src="images/classroom.png" alt="Cozy classroom at Angel Dale" loading="lazy" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Our Cozy Classroom 🏫</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="activities">
+          <img src="images/art-craft.png" alt="Children doing art and craft" loading="lazy" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Art & Craft Session 🎨</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="outdoor">
+          <img src="images/outdoor-play.png" alt="Children playing outdoors" loading="lazy" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Outdoor Playtime 🌳</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="activities">
+          <img src="images/dance-music.png" alt="Dance and music class" loading="lazy" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Dance & Music Fun 🎵</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="classroom">
+          <img src="images/storytelling.png" alt="Storytelling session in class" loading="lazy" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Storytime Magic 📖</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="events">
+          <img src="images/hero.png" alt="School event at Angel Dale" loading="lazy" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Our Happy Community 🌸</div>
+        </div>
+
+        <!-- Duplicate images for fuller gallery -->
+        <div class="gallery-masonry-item" data-lightbox data-category="outdoor">
+          <img src="images/outdoor-play.png" alt="Kids playing in the garden" loading="lazy" style="filter:hue-rotate(10deg) brightness(1.05);" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Garden Exploration 🌿</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="activities">
+          <img src="images/art-craft.png" alt="Creative art session" loading="lazy" style="filter:saturate(1.1) brightness(1.05);" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Little Artists at Work ✏️</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="classroom">
+          <img src="images/classroom.png" alt="Learning time in class" loading="lazy" style="filter:hue-rotate(-5deg) brightness(1.02);" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Learning Together 💛</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="events">
+          <img src="images/dance-music.png" alt="Annual day performance" loading="lazy" style="filter:saturate(1.2);" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Annual Day Performance 🎭</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="activities">
+          <img src="images/storytelling.png" alt="Interactive story session" loading="lazy" style="filter:brightness(1.08);" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Interactive Story Session 🌟</div>
+        </div>
+
+        <div class="gallery-masonry-item" data-lightbox data-category="outdoor">
+          <img src="images/hero.png" alt="Children in the school garden" loading="lazy" style="filter:hue-rotate(15deg) brightness(1.04);" />
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-icon">🔍</div>
+          </div>
+          <div class="gallery-caption">Sunshine & Smiles ☀️</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIDEO / VIRTUAL TOUR SECTION ============ -->
+  <section class="section bg-gradient-warm" aria-label="Virtual school tour">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge">Take a Tour</span>
+        <h2 class="section-title">See Our School <span>Come Alive</span></h2>
+        <p class="section-subtitle">We'd love to show you around. Schedule a visit or explore our campus virtually.</p>
+      </div>
+      <div class="card reveal" style="max-width: 720px; margin: 0 auto; text-align: center; padding: 48px;">
+        <div style="font-size: 4rem; margin-bottom: 20px;">🏫</div>
+        <h3 style="margin-bottom: 12px;">Schedule a Campus Visit</h3>
+        <p style="margin-bottom: 28px;">We warmly invite parents to tour our campus, meet our teachers, and see your child's future learning home first-hand.</p>
+        <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+          <a href="contact.html" class="btn btn-primary" id="btn-gallery-visit">📍 Book a Visit</a>
+          <a href="https://wa.me/919876543210?text=Hello!%20I'd%20like%20to%20book%20a%20campus%20visit%20at%20Angel%20Dale." class="btn btn-whatsapp" target="_blank" rel="noopener" id="btn-gallery-wa">💬 WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta-section" aria-label="Enroll CTA">
+    <div class="container">
+      <div class="cta-content reveal">
+        <span class="cta-badge">📸 Join Our Story</span>
+        <h2>Your Child's Best Memories Start Here</h2>
+        <p>Enroll your little one and let them be part of something beautiful.</p>
+        <div class="cta-buttons">
+          <a href="contact.html" class="btn btn-white btn-lg" id="btn-gallery-enroll">Enroll Now 🌸</a>
+          <a href="https://wa.me/919876543210" class="btn btn-outline-white btn-lg" target="_blank" rel="noopener" id="btn-gallery-wa2">💬 Chat with Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">🌸</div>
+            <div class="nav-logo-text">
+              <span class="nav-logo-name">Angel Dale</span>
+              <span class="nav-logo-tagline" style="color:var(--primary-light)">Pre-Primary School</span>
+            </div>
+          </a>
+          <p>Nurturing happy, curious, and confident children since 2017.</p>
+          <div class="footer-social">
+            <a href="#" class="footer-social-link" aria-label="Facebook">📘</a>
+            <a href="#" class="footer-social-link" aria-label="Instagram">📷</a>
+            <a href="#" class="footer-social-link" aria-label="YouTube">▶️</a>
+            <a href="https://wa.me/919876543210" class="footer-social-link" aria-label="WhatsApp" target="_blank" rel="noopener">💬</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">🏠 Home</a></li>
+            <li><a href="insights.html" class="footer-link">📚 Insights</a></li>
+            <li><a href="activities.html" class="footer-link">🎨 Activities</a></li>
+            <li><a href="gallery.html" class="footer-link">🖼️ Gallery</a></li>
+            <li><a href="training.html" class="footer-link">🎓 Training</a></li>
+            <li><a href="contact.html" class="footer-link">📞 Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Programs</h4>
+          <ul class="footer-links">
+            <li><a href="insights.html#playgroup" class="footer-link">🧸 Playgroup (2–3 yrs)</a></li>
+            <li><a href="insights.html#nursery" class="footer-link">🌻 Nursery (3–4 yrs)</a></li>
+            <li><a href="insights.html#kg" class="footer-link">🎓 KG (4–5 yrs)</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Contact Us</h4>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">📍</span>
+            <span>123, Rainbow Street, Blossom Nagar, Coimbatore – 641001</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">📞</span>
+            <span><a href="tel:+919876543210" style="color:inherit">+91 98765 43210</a></span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">🕐</span>
+            <span>Mon–Sat: 8:30 AM – 1:30 PM</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Angel Dale Pre-Primary School. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/919876543210?text=Hello!%20I'd%20like%20to%20enquire%20about%20Angel%20Dale."
+     class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <span class="whatsapp-float-tooltip">Chat with us!</span>
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="white" aria-hidden="true">
+      <path d="M16 3C9.373 3 4 8.373 4 15c0 2.386.669 4.617 1.827 6.52L4 29l7.68-1.803A12.94 12.94 0 0016 28c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 22c-1.89 0-3.662-.515-5.18-1.415l-.37-.22-4.57 1.072 1.097-4.46-.24-.385A9.94 9.94 0 016 15c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10zm5.58-7.56c-.305-.152-1.806-.891-2.086-.993-.28-.102-.484-.152-.688.152-.204.305-.789.993-.968 1.197-.178.203-.357.228-.662.076-.305-.152-1.288-.474-2.452-1.511-.907-.809-1.52-1.807-1.698-2.112-.178-.305-.019-.47.134-.621.137-.136.305-.355.458-.533.152-.178.203-.305.305-.508.102-.203.051-.381-.025-.533-.076-.152-.688-1.66-.942-2.272-.248-.597-.5-.516-.688-.525l-.585-.01c-.203 0-.533.076-.812.381-.28.305-1.068 1.044-1.068 2.547s1.093 2.955 1.245 3.158c.152.204 2.15 3.284 5.212 4.606.729.315 1.298.503 1.741.644.732.232 1.398.2 1.924.121.587-.087 1.806-.738 2.061-1.451.254-.713.254-1.324.178-1.451-.076-.128-.28-.203-.585-.355z"/>
+    </svg>
+  </a>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close image viewer">✕</button>
+      <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous image">‹</button>
+      <img src="" alt="Gallery image" class="lightbox-img" id="lightbox-img" />
+      <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next image">›</button>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
