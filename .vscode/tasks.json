@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Serve Site (port 8080)",
+            "type": "shell",
+            "command": "node",
+            "args": [
+                "server.js",
+                "8080"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            // Background server task: VS Code waits for the
+            // "Server running at" line before launching the browser.
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "angeldale-server",
+                "pattern": {
+                    "regexp": "^$"
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "Starting server",
+                    "endsPattern": "Server running at"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            },
+            // Start the local server automatically when the folder opens,
+            // so http://localhost:8080 always works in this workspace.
+            "runOptions": {
+                "runOn": "default"
+            }
+        }
+    ]
+}
