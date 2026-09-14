@@ -22,27 +22,47 @@ const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
 
 if (hamburger && navMenu) {
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    navMenu.classList.toggle('open');
-    document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
-  });
+  // Guard against double-firing: a touch is followed by a synthetic click event
+  let lastToggleTime = 0;
+
+  function toggleMobileMenu() {
+    const now = Date.now();
+    if (now - lastToggleTime < 400) return; // ignore duplicate touch/click events
+    lastToggleTime = now;
+
+    const isOpen = navMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  function closeMobileMenu() {
+    lastToggleTime = Date.now();
+    hamburger.classList.remove('open');
+    navMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  // Mouse / keyboard support
+  hamburger.addEventListener('click', toggleMobileMenu);
+
+  // Touch support: the menu opens instantly the moment the button is touched,
+  // instead of waiting for the browser's delayed synthetic click event.
+  hamburger.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // prevents the delayed click from double-toggling the menu
+    toggleMobileMenu();
+  }, { passive: false });
 
   // Close menu when a link is clicked
   navMenu.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      navMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
+    link.addEventListener('click', closeMobileMenu);
   });
 
   // Close on outside click
   document.addEventListener('click', (e) => {
     if (!navbar.contains(e.target) && navMenu.classList.contains('open')) {
-      hamburger.classList.remove('open');
-      navMenu.classList.remove('open');
-      document.body.style.overflow = '';
+      closeMobileMenu();
     }
   });
 }

@@ -371,11 +371,30 @@ ul { list-style: none; }
 .hamburger {
   display: none;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
   cursor: pointer;
-  padding: 4px;
+  /* Larger tap target (48x48px) so touches register reliably on mobile */
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
   background: none;
   border: none;
+  border-radius: 12px;
+  /* Removes tap delay / double-tap-zoom and browser callouts for instant response */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  transition: background var(--transition);
+}
+
+/* Visual feedback so the button visibly reacts the moment it is touched */
+.hamburger:active {
+  background: rgba(244, 143, 177, 0.18);
 }
 
 .hamburger span {
@@ -385,6 +404,8 @@ ul { list-style: none; }
   border-radius: 2px;
   transition: var(--transition);
   display: block;
+  /* Taps on the bars themselves are handled by the button */
+  pointer-events: none;
 }
 
 .hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
@@ -1944,11 +1965,32 @@ textarea.form-control {
 
   /* Hero */
   .hero-content { grid-template-columns: 1fr; gap: 40px; }
-  .hero-image-wrap { display: none; }
   .hero { min-height: auto; padding: 130px 0 70px; }
   .hero-stats { gap: 20px; }
   .hero-buttons { flex-direction: column; align-items: flex-start; }
   .hero-buttons .btn { width: 100%; justify-content: center; }
+
+  /* Mobile hero image: circle pinned to the empty top-right corner,
+     behind the badge row's free space, grazing the first title lines */
+  .hero-image-wrap {
+    position: absolute;
+    top: -60px;
+    right: -55px;
+    width: clamp(190px, 52vw, 250px);
+    height: clamp(190px, 52vw, 250px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0.4; /* 60% transparent — raise to 0.6 if you want the photo more visible */
+    box-shadow: none;
+  }
+  /* lift the text column above the circle */
+  .hero-text { position: relative; z-index: 1; }
+  .hero-float-card { display: none; }
 
   /* About */
   .about-preview { grid-template-columns: 1fr; gap: 32px; }
