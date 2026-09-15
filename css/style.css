@@ -4,7 +4,7 @@
    ============================================ */
 
 /* ---------- GOOGLE FONTS IMPORT ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Nunito:wght@300;400;500;600;700&display=swap');
 
 /* ---------- CSS CUSTOM PROPERTIES ---------- */
 :root {
@@ -512,6 +512,8 @@ ul { list-style: none; }
 }
 
 .hero-title {
+  font-family: 'Lobster Two', cursive;
+  font-weight: 700;
   font-size: clamp(2.2rem, 5vw, 3.4rem);
   margin-bottom: 20px;
   animation: fadeInUp 0.8s ease 0.1s forwards;

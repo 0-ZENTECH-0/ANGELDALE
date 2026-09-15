@@ -95,7 +95,8 @@
         <div class="hero-image-wrap" aria-hidden="true">
           <picture>
             <source media="(max-width: 768px)" srcset="images/hero-mobile.jpg" />
-            <img src="images/hero-desktop.jpg" alt="Children happily learning at Angel Dale" class="hero-img" fetchpriority="high" />
+            <img src="images/hero-desktop.jpg" alt="Children happily learning at Angel Dale" class="hero-img" fetchpriority="high"
+              onerror="this.onerror=null;var s=this.parentElement.querySelector('source');if(s)s.remove();this.src='images/hero-desktop.jpg?v=2';" />
           </picture>
           <div class="hero-float-card hero-float-card-1">
             <span class="float-card-icon">🏆</span>
